@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>C://logs//hazel-cast//hazelcast-server.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>C://logs//hazel-cast//hazelcast-server_%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d [%thread] %-5level %logger{50} %L - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <!-- <Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</Pattern> -->
+            <pattern>%d [%thread] %-5level %logger{50} %L - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+	<logger name="org" level="ERROR" />
+	<logger name="org.springframework.jdbc.core" level="ERROR" />
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="net.sf.json" level="ERROR" />
+	<logger name="org.springframework.batch" level="ERROR" />
+	<logger name="org.springframework.transaction" level="ERROR" />
+	<logger name="com.shc.ecom.greenbox" level="INFO" />
+	<logger name="org.springframework.orm" level="ERROR" />
+	<logger	name="org.springframework.batch.container.common.module.process.support.DefaultXmlDataProvider"	level="ERROR" />
+	<root level="INFO">
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+	</root>
+</configuration>

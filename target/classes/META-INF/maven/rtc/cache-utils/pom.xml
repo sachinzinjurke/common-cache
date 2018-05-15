@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>rtc</groupId>
+	<artifactId>cache-utils</artifactId>
+	<version>1.0</version>
+	<name>cache-utils</name>
+	<description>This project will have hazel-cast cache related classes</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.1.5.RELEASE</spring.version>
+		<hazelcast.version>3.4</hazelcast.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-all</artifactId>
+			<version>${hazelcast.version}</version>
+		</dependency>
+		<!-- Log related dependencies -->
+		<!-- https://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>jcl-over-slf4j</artifactId>
+    <version>1.7.5</version>
+</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.6.6</version>
+</dependency>
+
+		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-core</artifactId>
+    <version>1.0.7</version>
+</dependency>
+
+		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.0.7</version>
+</dependency>
+
+	</dependencies>
+
+	<build>
+		<!-- <resources> <resource> <directory>src/main/resources/</directory> 
+			<excludes> <exclude>**/hazelcast-*.xml</exclude> <exclude>**/hazelcast*.xml</exclude> 
+			</excludes> </resource> </resources> -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/hazelcast.xml</exclude>
+						<exclude>**/hazelcast-client.xml</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<finalName>uber-${project.artifactId}-${project.version}</finalName>
+
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+									<resources>
+										<resource>hazelcast-client.xml</resource>
+										<resource>hazelcast.xml</resource>
+									</resources>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.shc.ecom.common.hazelcast.StartHazelCast</mainClass>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.handlers</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.schemas</resource>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>SearsReleaseRepo</id>
+			<name>Sears Release Repository</name>
+			<url>http://wcsbuild301p.prod.ch3.s.com:8082/externaljars</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>obuLocalLibRepo</id>
+			<name>obuartifactoryvip.prod.ch3.s.com-releases</name>
+			<url>http://obuartifactoryvip.prod.ch3.s.com/artifactory/libs-release-local</url>
+		</repository>
+	</distributionManagement>
+</project>
